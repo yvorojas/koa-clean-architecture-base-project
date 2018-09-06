@@ -1,0 +1,6 @@
+/client/
+/coverage/
+/server/config/
+*.es5.js
+jest.config.js
+/test/

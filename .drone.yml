@@ -1,0 +1,100 @@
+pipeline:
+  # BUILD IMAGE
+  build:
+    image: node:carbon-alpine
+    commands:
+      - yarn
+      - yarn run test
+      - echo -n $(node -p "require('./package.json').version") > .tags
+      - echo -n ,latest >> .tags
+      - echo -n ,${DRONE_BRANCH}-${DRONE_BUILD_NUMBER} >> .tags
+      - echo -n ,c-${DRONE_COMMIT_SHA} >> .tags
+      - echo -n ,b-${DRONE_BUILD_NUMBER} >> .tags
+
+  sonar:
+    image: levelasquez/drone-sonarqube-runner
+    sources: ./src
+    version: 1.0.10
+    key: pmc-bff
+    encoding: UTF-8
+    lcovpath: ./coverage/lcov.info
+    secrets: [ sonar_host, sonar_login ]
+    when:
+      branch: master
+
+  publish_to_test:
+    image: plugins/docker
+    registry: segurosfalabella.azurecr.io
+    repo: segurosfalabella.azurecr.io/pmc-bff
+    tags:
+      - test
+      - c-${DRONE_COMMIT_SHA}
+      - b-${DRONE_BUILD_NUMBER}
+    secrets: [ docker_username, docker_password ]
+    when:
+      branch: staging
+
+  publish_to_prod:
+    image: plugins/docker
+    registry: segurosfalabella.azurecr.io
+    repo: segurosfalabella.azurecr.io/pmc-bff
+    tags:
+      - latest
+      - c-${DRONE_COMMIT_SHA}
+      - b-${DRONE_BUILD_NUMBER}
+    secrets: [ docker_username, docker_password ]
+    when:
+      branch: master
+
+  # DEPLOY IMAGE TO CLUSTER
+  deploy_to_test:
+    image: segurosfalabella.azurecr.io/drone/drone-deployer:b-56
+    uri: http://api.staging.segurosfalabella.cloud/deployer/v1/deployments
+    stack: pmc-bff
+    filename: stack.yml
+    env_vars:
+      VERSION: b-${DRONE_BUILD_NUMBER}
+      NODE_ENV: test
+      FLUENTD_ENV: staging
+      REPLICAS: 1
+      ENVIRONMENT: staging
+      CONSUL_HTTP_ADDR: consul-v2.tools.segurosfalabella.cloud 
+      CONSUL_HTTP_TOKEN: 59fb92db-ff06-84be-7125-d21534d3fa23
+    vault_kv: secret/project/pmc/bff/staging
+    secrets: [vault_addr, vault_token]
+    when:
+      branch: staging
+
+  deploy_to_prod:
+    image: segurosfalabella.azurecr.io/drone/drone-deployer:b-56
+    uri: http://api.staging.segurosfalabella.cloud/deployer/v1/deployments
+    stack: pmc-bff
+    filename: stack.yml
+    env_vars:
+      VERSION: b-${DRONE_BUILD_NUMBER}
+      NODE_ENV: prod
+      FLUENTD_ENV: production
+      REPLICAS: 2
+      ENVIRONMENT: production
+      CONSUL_HTTP_ADDR: consul-v2.tools.segurosfalabella.cloud 
+      CONSUL_HTTP_TOKEN: 59fb92db-ff06-84be-7125-d21534d3fa23 
+    vault_kv: secret/project/pmc/bff/production
+    secrets: [vault_addr, vault_token]
+    when:
+      branch: master
+
+  # NOTIFY ON SLACK
+  slack:
+    image: plugins/slack
+    webhook: https://hooks.slack.com/services/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
+    channel: drone-ci
+    icon_emoji: ":robot_face:"
+    when:
+      status: [ success, failure  ]
+    template: >
+      {{#success build.status}}
+        [{{repo.name}}] @{{build.author}} build {{build.number}} succeeded. Good job.
+      {{else}}
+        [{{repo.name}}] @{{build.author}} build {{build.number}} failed. Fix me please.
+      {{/success}}
+

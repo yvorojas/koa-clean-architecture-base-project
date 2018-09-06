@@ -1,0 +1,22 @@
+
+{
+    "name" : "pmc_bff",
+    "script" : "./src/app.js",
+    "watch" : true,
+    "env_docker": {
+        "NODE_ENV": "development",
+        "PORT": 3001,
+        "PREFIX": "",
+        "SWAGGER_SPECS": "http://localhost:3001/specs",
+        "API_COTIZACION_URL": "http://host.docker.internal:3002",
+        "API_COTIZACION_TOKEN": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiQVBJX0tFWSIsImFwcGxpY2F0aW9uX25hbWUiOiJBUElfQ09USVpBQ0lPTiIsImVudmlyb25tZW50IjoiREVWRUxPUE1FTlQiLCJpYXQiOjE1MzQyNjc5OTEsImV4cCI6MTU5NzMzOTk5MX0.K-yGOOqMXCGrMtbjJom-ZTOl9bE5VjFj42HMZ2NmDdYb2JCYT44ZTOuCGyyTO8FPdgqcjBc8oSkxwe29sIdd4AbSRjDUacpK7mCnomCgm_gF7lK3rfyhFVR6EBJt4xxB1kVQTmsrMwKAdEN_tUlg8xxzlYKc-5cWwH1mayrHeJW81pqo50i8taJBUGgUX0N2k7aWtqt9f-OL_XRwrzmZmFpOCEbAUTw0JbtoDFpQbEVm60H5s_LaWCbDzbYk23ytNZFPCTES1IDX_MVrM8SmQfSeYFkknQD_uO9lS1w2G_-D2kiB6BaAD_4Y5yTy1YcpFBAram3yQ-0tfm8GMYKGO8GxNUXukTGKTgqoMs5HBrjhLboupjkThh_3tGgpmj2GDnnsNRt6QlVV8XDHjmlsVvJqQd80lL_qj1c8N-ZRXUuyNoXtpGgyOWAsurXoDgY3sMiH_-rw6EJ32JQ3ZlEsdO6gyn4hG7ST-s3VkkHlCqLdOuwjgQE_-USS1zxG2IN-wu6hFIvCG5_s-EPT60URtqkjzTWpoc8WY93p24fwjA0yYTgs5d_0mA7hnqF39NpRMxXjgWygDuvoIQm8hnuB84ArSBs069EeCooX1q2ksL0wgLy4H0F48CdCU5YgcSHdZnskGVXz6zcxGfoviMBpgHb5LItqZbrZxLQRrciBF1w"
+    },
+    "env_local_dev": {
+        "NODE_ENV": "development",
+        "PORT": 3001,
+        "PREFIX": "",
+        "SWAGGER_SPECS": "http://localhost:3001/specs",
+        "API_COTIZACION_URL": "http://localhost:3002",
+        "API_COTIZACION_TOKEN": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiQVBJX0tFWSIsImFwcGxpY2F0aW9uX25hbWUiOiJBUElfQ09USVpBQ0lPTiIsImVudmlyb25tZW50IjoiREVWRUxPUE1FTlQiLCJpYXQiOjE1MzQyNjc5OTEsImV4cCI6MTU5NzMzOTk5MX0.K-yGOOqMXCGrMtbjJom-ZTOl9bE5VjFj42HMZ2NmDdYb2JCYT44ZTOuCGyyTO8FPdgqcjBc8oSkxwe29sIdd4AbSRjDUacpK7mCnomCgm_gF7lK3rfyhFVR6EBJt4xxB1kVQTmsrMwKAdEN_tUlg8xxzlYKc-5cWwH1mayrHeJW81pqo50i8taJBUGgUX0N2k7aWtqt9f-OL_XRwrzmZmFpOCEbAUTw0JbtoDFpQbEVm60H5s_LaWCbDzbYk23ytNZFPCTES1IDX_MVrM8SmQfSeYFkknQD_uO9lS1w2G_-D2kiB6BaAD_4Y5yTy1YcpFBAram3yQ-0tfm8GMYKGO8GxNUXukTGKTgqoMs5HBrjhLboupjkThh_3tGgpmj2GDnnsNRt6QlVV8XDHjmlsVvJqQd80lL_qj1c8N-ZRXUuyNoXtpGgyOWAsurXoDgY3sMiH_-rw6EJ32JQ3ZlEsdO6gyn4hG7ST-s3VkkHlCqLdOuwjgQE_-USS1zxG2IN-wu6hFIvCG5_s-EPT60URtqkjzTWpoc8WY93p24fwjA0yYTgs5d_0mA7hnqF39NpRMxXjgWygDuvoIQm8hnuB84ArSBs069EeCooX1q2ksL0wgLy4H0F48CdCU5YgcSHdZnskGVXz6zcxGfoviMBpgHb5LItqZbrZxLQRrciBF1w"
+    }
+}

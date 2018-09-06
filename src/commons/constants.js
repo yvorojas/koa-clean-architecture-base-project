@@ -1,0 +1,11 @@
+const LIFE_INSURANCE_PRODUCT = 20215;
+const GET_PLANS_TO_QUOTE_METHOD = '/plan?category=%s&product=%s';
+const GET_QUOTE_PLAN_METHOD = '/quote';
+const VALID_STATUS_CODES = [200, 201, 204];
+
+module.exports = {
+  LIFE_INSURANCE_PRODUCT,
+  GET_PLANS_TO_QUOTE_METHOD,
+  GET_QUOTE_PLAN_METHOD,
+  VALID_STATUS_CODES,
+};

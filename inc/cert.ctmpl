@@ -1,0 +1,1 @@
+{{ with secret (print "secret/project/pmc/bff/" (env "ENVIRONMENT"))}}{{ .Data.cert }}{{ end }}

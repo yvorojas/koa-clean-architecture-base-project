@@ -1,0 +1,59 @@
+# docker stack deploy -c stack.yaml documents --with-registry-auth
+version: '3.3'
+services:
+  api:
+    image: segurosfalabella.azurecr.io/pmc-bff:${VERSION}
+    ports:
+      - '3000:3000'
+    networks:
+      - apps-v2
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - CONSUL_HTTP_ADDR=${CONSUL_HTTP_ADDR}
+      - CONSUL_HTTP_TOKEN=${CONSUL_HTTP_TOKEN}
+      - VAULT_ADDR=${VAULT_ADDR}
+      - VAULT_TOKEN=${VAULT_TOKEN}
+      - SWAGGER_SPECS=${SWAGGER_SPECS}
+      - WATCH=${WATCH}
+      - PORT=${PORT}
+      - PREFIX=${PREFIX}
+      - API_COTIZACION_URL=${API_COTIZACION_URL}
+      - API_COTIZACION_TOKEN=${API_COTIZACION_TOKEN}
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        tag: pmc-bff
+        labels: environment,version,appname
+    labels:
+      environment: ${FLUENTD_ENV}
+      version: ${VERSION}
+      appname: pmc-bff
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+      replicas: ${REPLICAS}
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+      update_config:
+        parallelism: 1
+        delay: 30s
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 5
+        window: 30s
+
+networks:
+  apps-v2:
+    external: true
